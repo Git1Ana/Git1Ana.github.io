@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClientBase Pro - система управления клиентской базой</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4e73df;
+            --secondary: #6f42c1;
+            --success: #1cc88a;
+            --info: #36b9cc;
+            --warning: #f6c23e;
+            --danger: #e74a3b;
+            --light: #f8f9fc;
+            --dark: #5a5c69;
+        }
+        
+        body {
+            font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+            background-color: #f8f9fc;
+            color: #444;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding-top: 20px;
+            z-index: 1000;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .sidebar-brand {
+            padding: 15px 20px;
+            font-size: 20px;
+            font-weight: 800;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        
+        .sidebar-nav {
+            padding-left: 0;
+            list-style: none;
+            margin-top: 30px;
+        }
+        
+        .sidebar-nav li {
+            position: relative;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-nav a {
+            display: block;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid white;
+        }
+        
+        .sidebar-nav i {
+            margin-right: 10px;
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .topbar {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid #eaecf4;
+            font-weight: 700;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0 !important;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .stat-card i {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card .label {
+            font-size: 14px;
+            color: #7a7a7a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        .bg-gradient-success {
+            background: linear-gradient(135deg, var(--success) 0%, #0f9d58 100%);
+            color: white;
+        }
+        
+        .bg-gradient-info {
+            background: linear-gradient(135deg, var(--info) 0%, #1a73e8 100%);
+            color: white;
+        }
+        
+        .bg-gradient-warning {
+            background: linear-gradient(135deg, var(--warning) 0%, #f9ab00 100%);
+            color: white;
+        }
+        
+        .table th {
+            font-weight: 700;
+            color: #444;
+            border-top: none;
+            border-bottom: 2px solid #eaecf4;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #3a5fc8;
+            border-color: #3a5fc8;
+        }
+        
+        .action-buttons .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .search-box {
+            position: relative;
+            max-width: 300px;
+        }
+        
+        .search-box input {
+            padding-left: 40px;
+            border-radius: 20px;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 10px;
+            color: #b4b4b4;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        .notification-badge {
+            position: relative;
+        }
+        
+        .notification-badge .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 250px;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+                text-align: center;
+            }
+            
+            .sidebar-brand span {
+                display: none;
+            }
+            
+            .sidebar-nav a span {
+                display: none;
+            }
+            
+            .sidebar-nav i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Боковая панель -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-database"></i> <span>ClientBase</span>
+        </div>
+        
+        <ul class="sidebar-nav">
+            <li><a href="#" class="active"><i class="fas fa-home"></i> <span>Главная</span></a></li>
+            <li><a href="#"><i class="fas fa-users"></i> <span>Клиенты</span></a></li>
+            <li><a href="#"><i class="fas fa-chart-pie"></i> <span>Аналитика</span></a></li>
+            <li><a href="#"><i class="fas fa-history"></i> <span>История изменений</span></a></li>
+            <li><a href="#"><i class="fas fa-file-export"></i> <span>Экспорт данных</span></a></li>
+            <li><a href="#"><i class="fas fa-user-cog"></i> <span>Управление доступом</span></a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> <span>Настройки</span></a></li>
+            <li><a href="#"><i class="fas fa-question-circle"></i> <span>Помощь</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Верхняя панель -->
+        <div class="topbar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" class="form-control" placeholder="Поиск клиентов...">
+            </div>
+            
+            <div class="d-flex align-items-center">
+                <div class="notification-badge me-4">
+                    <i class="fas fa-bell fa-lg"></i>
+                    <span class="badge">3</span>
+                </div>
+                
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=4e73df&color=fff" alt="User">
+                    <div>
+                        <div class="fw-bold">Администратор</div>
+                        <small class="text-muted">admin@example.com</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Заголовок и кнопки -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0">Панель управления клиентской базой</h1>
+            <button class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Добавить клиента
+            </button>
+        </div>
+
+        <!-- Карточки статистики -->
+        <div class="row">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card bg-gradient-primary stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="number">524</div>
+                    <div class="label">Всего клиентов</div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card bg-gradient-success stat-card">
+                    <i class="fas fa-user-plus"></i>
+                    <div class="number">24</div>
+                    <div class="label">Новых за месяц</div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card bg-gradient-info stat-card">
+                    <i class="fas fa-chart-line"></i>
+                    <div class="number">82%</div>
+                    <div class="label">Активных клиентов</div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card bg-gradient-warning stat-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div class="number">9</div>
+                    <div class="label">Требуют внимания</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- График и таблица -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-area me-2"></i>Динамика добавления клиентов
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="clientGrowthChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-industry me-2"></i>Клиенты по отраслям
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="industryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Таблица клиентов -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="fas fa-table me-2"></i>Список клиентов
+                </div>
+                <div class="d-flex">
+                    <select class="form-select form-select-sm me-2">
+                        <option>Все статусы</option>
+                        <option>Активный</option>
+                        <option>Неактивный</option>
+                        <option>Потенциальный</option>
+                    </select>
+                    <button class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-filter"></i> Фильтр
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Имя</th>
+                                <th>Email</th>
+                                <th>Телефон</th>
+                                <th>Компания</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1254</td>
+                                <td>Иванов Алексей</td>
+                                <td>alexey@example.com</td>
+                                <td>+7 (912) 345-67-89</td>
+                                <td>ООО "Рога и копыта"</td>
+                                <td><span class="badge bg-success">Активный</span></td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1253</td>
+                                <td>Петрова Мария</td>
+                                <td>maria@example.com</td>
+                                <td>+7 (923) 456-78-90</td>
+                                <td>ЗАО "Солнце"</td>
+                                <td><span class="badge bg-warning">Потенциальный</span></td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1252</td>
+                                <td>Сидоров Дмитрий</td>
+                                <td>dmitry@example.com</td>
+                                <td>+7 (934) 567-89-01</td>
+                                <td>ИП Сидоров</td>
+                                <td><span class="badge bg-success">Активный</span></td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1251</td>
+                                <td>Кузнецова Ольга</td>
+                                <td>olga@example.com</td>
+                                <td>+7 (945) 678-90-12</td>
+                                <td>ООО "Технопром"</td>
+                                <td><span class="badge bg-secondary">Неактивный</span></td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1250</td>
+                                <td>Васильев Иван</td>
+                                <td>ivan@example.com</td>
+                                <td>+7 (956) 789-01-23</td>
+                                <td>АО "ГлобалСервис"</td>
+                                <td><span class="badge bg-success">Активный</span></td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Предыдущая</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Следующая</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация графиков
+        document.addEventListener('DOMContentLoaded', function() {
+            // График роста клиентов
+            const growthCtx = document.getElementById('clientGrowthChart').getContext('2d');
+            const growthChart = new Chart(growthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                    datasets: [{
+                        label: 'Количество клиентов',
+                        data: [420, 432, 448, 465, 472, 485, 490, 502, 510, 518, 522, 524],
+                        borderColor: '#4e73df',
+                        backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                        pointRadius: 4,
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 400,
+                            grid: {
+                                drawBorder: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Круговая диаграмма отраслей
+            const industryCtx = document.getElementById('industryChart').getContext('2d');
+            const industryChart = new Chart(industryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['IT', 'Розница', 'Производство', 'Услуги', 'Другое'],
+                    datasets: [{
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+            
+            // Имитация загрузки данных
+            console.log("Система управления клиентской базой инициализирована");
+            console.log("В реальной системе здесь бы загружались данные с сервера");
+        });
+        
+        // Имитация работы кнопок
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.classList.contains('btn-danger')) {
+                    const clientName = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                    if (confirm(`Вы уверены, что хотите удалить клиента "${clientName}"?`)) {
+                        alert(`Клиент "${clientName}" будет удален в реальной системе`);
+                    }
+                } else if (this.classList.contains('btn-info')) {
+                    alert('В реальной системе откроется форма редактирования клиента');
+                } else if (this.classList.contains('btn-primary')) {
+                    if (this.querySelector('.fa-plus')) {
+                        alert('В реальной системе откроется форма добавления нового клиента');
+                    } else {
+                        alert('В реальной системе откроется подробная информация о клиенте');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

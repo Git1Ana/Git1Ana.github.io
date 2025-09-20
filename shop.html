@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NashShop - Интернет-магазин электроники</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4a6de5;
+            --secondary: #f8f9fa;
+            --accent: #ff6b6b;
+            --dark: #343a40;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --border: #dee2e6;
+            --text: #212529;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), #2c4fd6);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1550009158-9ebf69173e03?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #3a5bd0;
+            transform: translateY(-2px);
+        }
+
+        /* Products Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2rem;
+            color: var(--dark);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            padding: 10px 20px;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid var(--border);
+            border-radius: 30px 0 0 30px;
+            outline: none;
+        }
+
+        .search-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .product-category {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Cart Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 25px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        .cart-items {
+            margin: 20px 0;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            background: var(--secondary);
+            border: none;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            margin: 0 10px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .cart-total {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: right;
+            margin: 20px 0;
+        }
+
+        /* Checkout Steps */
+        .checkout-steps {
+            display: flex;
+            justify-content: space-between;
+            max-width: 600px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .checkout-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border);
+            z-index: 1;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .step.active .step-number {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .step.completed .step-number {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .step-title {
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        textarea.form-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .admin-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .admin-tab.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .admin-content {
+            display: none;
+        }
+
+        .admin-content.active {
+            display: block;
+        }
+
+        .orders-table, .products-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table th, .orders-table td,
+        .products-table th, .products-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .orders-table th, .products-table th {
+            background-color: var(--secondary);
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-processing {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        /* User Account */
+        .user-account {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .user-info h2 {
+            margin-bottom: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-laptop"></i>
+                    NashShop
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Главная</a></li>
+                        <li><a href="#">Каталог</a></li>
+                        <li><a href="#">О нас</a></li>
+                        <li><a href="#">Контакты</a></li>
+                        <li class="cart-icon" onclick="openCart()">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count">2</span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Техника будущего уже сегодня</h1>
+            <p>Откройте для себя новейшие гаджеты и электронику по доступным ценам с быстрой доставкой по всему миру</p>
+            <a href="#" class="btn">Перейти к покупкам</a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="container">
+        <h2 class="section-title">Наши товары</h2>
+        
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Поиск товаров...">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+        
+        <div class="filters">
+            <button class="filter-btn active">Все товары</button>
+            <button class="filter-btn">Смартфоны</button>
+            <button class="filter-btn">Ноутбуки</button>
+            <button class="filter-btn">Аксессуары</button>
+            <button class="filter-btn">Телевизоры</button>
+        </div>
+        
+        <div class="products-grid" id="products-container">
+            <!-- Products will be loaded here dynamically -->
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCart()">&times;</span>
+            <h2>Корзина покупок</h2>
+            
+            <div class="cart-items">
+                <div class="cart-item">
+                    <img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="MacBook Pro" class="cart-item-img">
+                    <div class="cart-item-info">
+                        <h3 class="cart-item-title">MacBook Air 13 (2025)</h3>
+                        <p class="cart-item-price">74 490 ₽</p>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn">-</button>
+                            <input type="number" class="quantity-input" value="1" min="1">
+                            <button class="quantity-btn">+</button>
+                        </div>
+                    </div>
+                    <button class="btn" style="background: var(--accent);">Удалить</button>
+                </div>
+                
+                <div class="cart-item">
+                    <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="iPhone" class="cart-item-img">
+                    <div class="cart-item-info">
+                        <h3 class="cart-item-title">iPhone 14 Pro</h3>
+                        <p class="cart-item-price">89 999 ₽</p>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn">-</button>
+                            <input type="number" class="quantity-input" value="1" min="1">
+                            <button class="quantity-btn">+</button>
+                        </div>
+                    </div>
+                    <button class="btn" style="background: var(--accent);">Удалить</button>
+                </div>
+            </div>
+            
+            <div class="cart-total">
+                Итого: 219 998 ₽
+            </div>
+            
+            <button class="btn" style="width: 100%;" onclick="startCheckout()">Оформить заказ</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkout-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCheckout()">&times;</span>
+            <h2>Оформление заказа</h2>
+            
+            <div class="checkout-steps">
+                <div class="step completed">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Корзина</div>
+                </div>
+                <div class="step active">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Доставка</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Оплата</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Подтверждение</div>
+                </div>
+            </div>
+            
+            <form id="delivery-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Имя</label>
+                        <input type="text" class="form-input" placeholder="Ваше имя">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Фамилия</label>
+                        <input type="text" class="form-input" placeholder="Ваша фамилия">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Адрес</label>
+                    <input type="text" class="form-input" placeholder="Улица, дом, квартира">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Город</label>
+                        <input type="text" class="form-input" placeholder="Город">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Индекс</label>
+                        <input type="text" class="form-input" placeholder="Почтовый индекс">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Телефон</label>
+                    <input type="tel" class="form-input" placeholder="+7 (XXX) XXX-XX-XX">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" placeholder="Ваш email">
+                </div>
+                
+                <button type="button" class="btn" style="width: 100%;" onclick="nextStep()">Продолжить</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Account Section -->
+    <section class="container">
+        <h2 class="section-title">Личный кабинет</h2>
+        
+        <div class="user-account">
+            <div class="user-profile">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="User" class="user-avatar">
+                <div class="user-info">
+                    <h2>Иван Иванов</h2>
+                    <p>ivan.ivanov@example.com</p>
+                </div>
+            </div>
+            
+            <h3>История заказов</h3>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Номер заказа</th>
+                        <th>Дата</th>
+                        <th>Товары</th>
+                        <th>Сумма</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#12345</td>
+                        <td>12.05.2023</td>
+                        <td>iPhone 14 Pro, AirPods</td>
+                        <td>104 999 ₽</td>
+                        <td><span class="status status-completed">Завершен</span></td>
+                    </tr>
+                    <tr>
+                        <td>#12340</td>
+                        <td>05.05.2023</td>
+                        <td>MacBook Pro 2023</td>
+                        <td>129 999 ₽</td>
+                        <td><span class="status status-processing">В обработке</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Admin Panel Section -->
+    <section class="container">
+        <h2 class="section-title">Панель администратора</h2>
+        
+        <div class="admin-panel">
+            <div class="admin-tabs">
+                <div class="admin-tab active" onclick="switchTab('products')">Товары</div>
+                <div class="admin-tab" onclick="switchTab('orders')">Заказы</div>
+                <div class="admin-tab" onclick="switchTab('users')">Пользователи</div>
+                <div class="admin-tab" onclick="switchTab('add-product')">Добавить товар</div>
+            </div>
+            
+            <div id="products-tab" class="admin-content active">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Категория</th>
+                            <th>Цена</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-products-list">
+                        <!-- Products will be loaded here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="orders-tab" class="admin-content">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Номер заказа</th>
+                            <th>Клиент</th>
+                            <th>Дата</th>
+                            <th>Сумма</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#12345</td>
+                            <td>Иван Иванов</td>
+                            <td>12.05.2023</td>
+                            <td>104 999 ₽</td>
+                            <td><span class="status status-completed">Завершен</span></td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px;">Просмотр</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#12340</td>
+                            <td>Мария Ивановна</td>
+                            <td>05.05.2023</td>
+                            <td>129 999 ₽</td>
+                            <td><span class="status status-processing">В обработке</span></td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px;">Просмотр</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="users-tab" class="admin-content">
+                <h3>Управление пользователями</h3>
+                <p>Здесь будет интерфейс управления пользователями</p>
+            </div>
+            
+            <div id="add-product-tab" class="admin-content">
+                <h3>Добавить новый товар</h3>
+                <form id="add-product-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Название товара</label>
+                            <input type="text" class="form-input" id="product-name" placeholder="Введите название">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Категория</label>
+                            <select class="form-input" id="product-category">
+                                <option value="Ноутбуки">Ноутбуки</option>
+                                <option value="Смартфоны">Смартфоны</option>
+                                <option value="Аксессуары">Аксессуары</option>
+                                <option value="Телевизоры">Телевизоры</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Цена (₽)</label>
+                            <input type="number" class="form-input" id="product-price" placeholder="Введите цену">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ссылка на изображение</label>
+                            <input type="text" class="form-input" id="product-image" placeholder="Введите URL изображения">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Описание товара</label>
+                        <textarea class="form-input" id="product-description" placeholder="Введите описание товара"></textarea>
+                    </div>
+                    
+                    <button type="button" class="btn" onclick="addNewProduct()">Добавить товар</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Products data
+        let products = [
+            {
+                id: 1,
+                name: "MacBook Pro 2025",
+                price: 169999,
+                category: "Ноутбуки",
+                image: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                description: "Мощный ноутбук для профессиональной работы с процессором M3"
+            },
+            {
+                id: 2,
+                name: "iPhone 17 Pro",
+                price: 169999,
+                category: "Смартфоны",
+                image: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                description: "Новый флагманский смартфон от Apple с улучшенной камерой"
+            },
+            {
+                id: 3,
+                name: "Игровой ноутбук ASUS 2025",
+                price: 124999,
+                category: "Ноутбуки",
+                image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                description: "Мощный игровой ноутбук с видеокартой RTX 5000"
+            },
+            {
+                id: 4,
+                name: "Apple Watch Series 11",
+                price: 39999,
+                category: "Аксессуары",
+                image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                description: "Умные часы для отслеживания здоровья с новыми функциями"
+            },
+            {
+                id: 5,
+                name: "Samsung Galaxy Z Fold 5",
+                price: 139999,
+                category: "Смартфоны",
+                image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                description: "Складной смартфон с улучшенным дисплеем и камерой"
+            },
+            {
+                id: 6,
+                name: "PlayStation 6",
+                price: 59999,
+                category: "Игровые консоли",
+                image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                description: "Новейшая игровая консоль от Sony с поддержкой 8K"
+            }
+        ];
+
+        // Initialize the application
+        function initApp() {
+            renderProducts();
+            renderAdminProducts();
+        }
+
+        // Render products to the catalog
+        function renderProducts() {
+            const productsContainer = document.getElementById('products-container');
+            productsContainer.innerHTML = '';
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-img">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-category">${product.category}</p>
+                        <p class="product-price">${product.price.toLocaleString()} ₽</p>
+                        <div class="product-actions">
+                            <button class="btn" onclick="addToCart(${product.id})">В корзину</button>
+                            <button><i class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                `;
+                productsContainer.appendChild(productCard);
+            });
+        }
+
+        // Render products in admin panel
+        function renderAdminProducts() {
+            const adminProductsList = document.getElementById('admin-products-list');
+            adminProductsList.innerHTML = '';
+            
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.id}</td>
+                    <td>${product.name}</td>
+                    <td>${product.category}</td>
+                    <td>${product.price.toLocaleString()} ₽</td>
+                    <td>
+                        <button class="btn" style="padding: 5px 10px;" onclick="editProduct(${product.id})">Редактировать</button>
+                        <button class="btn" style="padding: 5px 10px; background: var(--accent);" onclick="deleteProduct(${product.id})">Удалить</button>
+                    </td>
+                `;
+                adminProductsList.appendChild(row);
+            });
+        }
+
+        // Add new product
+        function addNewProduct() {
+            const name = document.getElementById('product-name').value;
+            const category = document.getElementById('product-category').value;
+            const price = parseInt(document.getElementById('product-price').value);
+            const image = document.getElementById('product-image').value;
+            const description = document.getElementById('product-description').value;
+            
+            if (!name || !category || !price || !image) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+            
+            const newProduct = {
+                id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+                name,
+                category,
+                price,
+                image,
+                description
+            };
+            
+            products.push(newProduct);
+            renderProducts();
+            renderAdminProducts();
+            
+            // Clear the form
+            document.getElementById('add-product-form').reset();
+            
+            alert('Товар успешно добавлен!');
+        }
+
+        // Edit product
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (product) {
+                document.getElementById('product-name').value = product.name;
+                document.getElementById('product-category').value = product.category;
+                document.getElementById('product-price').value = product.price;
+                document.getElementById('product-image').value = product.image;
+                document.getElementById('product-description').value = product.description;
+                
+                // Switch to add product tab
+                switchTab('add-product');
+                
+                // Change button text and functionality
+                const addButton = document.querySelector('#add-product-tab .btn');
+                addButton.textContent = 'Сохранить изменения';
+                addButton.onclick = function() {
+                    saveProductChanges(id);
+                };
+            }
+        }
+
+        // Save product changes
+        function saveProductChanges(id) {
+            const name = document.getElementById('product-name').value;
+            const category = document.getElementById('product-category').value;
+            const price = parseInt(document.getElementById('product-price').value);
+            const image = document.getElementById('product-image').value;
+            const description = document.getElementById('product-description').value;
+            
+            if (!name || !category || !price || !image) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+            
+            const index = products.findIndex(p => p.id === id);
+            if (index !== -1) {
+                products[index] = {
+                    id,
+                    name,
+                    category,
+                    price,
+                    image,
+                    description
+                };
+                
+                renderProducts();
+                renderAdminProducts();
+                
+                // Reset form and button
+                document.getElementById('add-product-form').reset();
+                const addButton = document.querySelector('#add-product-tab .btn');
+                addButton.textContent = 'Добавить товар';
+                addButton.onclick = addNewProduct;
+                
+                alert('Товар успешно обновлен!');
+            }
+        }
+
+        // Delete product
+        function deleteProduct(id) {
+            if (confirm('Вы уверены, что хотите удалить этот товар?')) {
+                products = products.filter(p => p.id !== id);
+                renderProducts();
+                renderAdminProducts();
+                alert('Товар успешно удален!');
+            }
+        }
+
+        // Cart functionality
+        function openCart() {
+            document.getElementById('cart-modal').style.display = 'flex';
+        }
+        
+        function closeCart() {
+            document.getElementById('cart-modal').style.display = 'none';
+        }
+        
+        function addToCart(productId) {
+            alert('Товар добавлен в корзину!');
+            openCart();
+        }
+        
+        // Checkout functionality
+        function startCheckout() {
+            document.getElementById('cart-modal').style.display = 'none';
+            document.getElementById('checkout-modal').style.display = 'flex';
+        }
+        
+        function closeCheckout() {
+            document.getElementById('checkout-modal').style.display = 'none';
+        }
+        
+        function nextStep() {
+            alert('Переход к следующему шагу оплаты!');
+        }
+        
+        // Admin panel functionality
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.admin-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Deactivate all tab buttons
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activate current tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Find the clicked tab and activate it
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Initialize the app when the page loads
+        window.onload = initApp;
+    </script>
+</body>
+</html>

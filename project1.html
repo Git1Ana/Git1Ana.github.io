@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализатор востребованных навыков - Демонстрация</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .project-demo {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-button:hover {
+            text-decoration: underline;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .project-details {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .features-list {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        
+        .features-list li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .tech-tag {
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .stat-highlight {
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+            border-left: 4px solid #3498db;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .li{
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="project-demo">
+            <a href="index.html#projects" class="back-button">
+                <i class="fas fa-arrow-left"></i> Назад к портфолио
+            </a>
+            
+            <h1>Анализатор востребованных навыков</h1>
+            
+            <div class="video-container">
+                <!-- Замените на ваше видео -->
+                <iframe src="pr1.mp4" 
+                        title="Демонстрация анализатора востребованных навыков" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            
+            <div class="project-details">
+                <h2>О проекте</h2>
+                <p>Веб-приложение для автоматизации анализа востребованных навыков на рынке труда. Приложение позволяет значительно сократить время, необходимое соискателям и учебным заведениям для оценки текущих требований работодателей и определения ключевых навыков.</p>
+                
+                <div class="stat-highlight">
+                    <h3>Ключевые результаты:</h3>
+                    <div class="stat-item">
+                        <span>Сокращение времени сбора вакансий:</span>
+                        <span>> 90%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Сокращение времени анализа компетенций:</span>
+                        <span>> 70%</span>
+                    </div>
+                </div>
+                
+                <h3>Основные функции</h3>
+                <ul class="features-list">
+                    <li>Интеграция с API HeadHunter для сбора актуальных вакансий в реальном времени</li>
+                    <li>Гибкая система фильтрации вакансий по различным критериям</li>
+                    <li>Интеграция с Yandex GPT для автоматической классификации и анализа навыков</li>
+                    <li>Визуализация данных в виде интерактивных таблиц и графиков связей</li>
+                    <li>Анализ зависимости навыков от уровня заработной платы</li>
+                    <li>Сохранение результатов анализа и возможность их объединения</li>
+                    <li>Экспорт отчетов в текстовом формате</li>
+                    <li>Управление кастомными промптами для ИИ-анализа</li>
+                </ul>
+                
+                <h3>Использованные технологии</h3>
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Flask</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">HTML/CSS</span>
+                    <span class="tech-tag">HeadHunter API</span>
+                    <span class="tech-tag">Yandex GPT API</span>
+                    <span class="tech-tag">Vis.js</span>
+                    <span class="tech-tag">REST API</span>
+                </div>
+                
+                <h3>Что показано в демонстрации</h3>
+                <p>В видео показан полный процесс работы с приложением: от настройки параметров поиска вакансий и сбора данных до анализа навыков с помощью ИИ, визуализации результатов и экспорта отчетов.</p>
+                
+                <ol>
+                    <li>Настройка фильтров поиска вакансий</li>
+                    <li>Сбор и обработка данных с HeadHunter</li>
+                    <li>Анализ навыков с использованием Yandex GPT</li>
+                    <li>Визуализация связей между навыками</li>
+                    <li>Сравнение различных выборок данных</li>
+                    <li>Экспорт результатов анализа</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Анастасия. Junior Full-stack разработчик</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Название проекта - Демонстрация</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .project-demo {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-button:hover {
+            text-decoration: underline;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 соотношение */
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .project-details {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .features-list {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        
+        .features-list li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .tech-tag {
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="project-demo">
+            <a href="index.html#projects" class="back-button">
+                <i class="fas fa-arrow-left"></i> Назад к портфолио
+            </a>
+            
+            <h1>Название проекта</h1>
+            
+            <div class="video-container">
+                <!-- Замените на ваше видео -->
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                        title="Демонстрация проекта" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            
+            <div class="project-details">
+                <h2>О проекте</h2>
+                <p>Подробное описание проекта, его целей и функциональности.</p>
+                
+                <h3>Основные функции</h3>
+                <ul class="features-list">
+                    <li>Функция 1: Описание что делает эта функция</li>
+                    <li>Функция 2: Описание что делает эта функция</li>
+                    <li>Функция 3: Описание что делает эта функция</li>
+                    <li>Функция 4: Описание что делает эта функция</li>
+                </ul>
+                
+                <h3>Использованные технологии</h3>
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">HTML/CSS</span>
+                </div>
+                
+                <h3>Что показано в демонстрации</h3>
+                <p>Подробное описание того, что происходит в демонстрационном видео, с таймкодами если необходимо.</p>
+                
+                <div class="project-links">
+                    <a href="#" class="btn btn-outline">
+                        <i class="fab fa-github"></i> Исходный код
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Анастасия. Junior Full-stack разработчик</p>
+        </div>
+    </footer>
+</body>
+</html>
